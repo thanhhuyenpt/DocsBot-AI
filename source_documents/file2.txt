@@ -1,0 +1,74 @@
+Tổng quan về Transformer: Attention is all you need
+Tổng quan kiến trúc
+Mô hình Transformers được chia ra làm hai phần chính Encoder và Decoder. Trong bài báo Attention is all you need, tác giả có đề cập kỹ hơn về Encoder Stack và Decoder Stack.
+
+	Encoder: Cả lớp Encoder được coi như là stack 6 cái phần encoder lại với nhau. Với mỗi một lớp Encoder thì sẽ có hai phần nhỏ hơn (sub-layers). Đầu tiên là một lớp multi-head self-attention mechanism, tiếp sau đó là một lớp position-wise fully connected feed-forward network. Sau mỗi lớp bên trên thì nó đều được kết nối thêm một residual connection và layer normalization. 
+
+Decoder: Có một số tương đồng với lớp encoder: Stack N=6, cũng có hai lớp sublayers như encoder. Nhưng một số điểm khác của lớp decoder đó là thay vì sử dụng lớp multi-head attention ở phần đầu tiên thì nó sử dụng một lớp Masked Multi-Head Attention. Ngoài ra thì ở giữa hai sublayers thì họ chèn thêm ở giữa một sublayer Multi-head Attention và điểm đặc biệt của nó là nhận đầu ra của lớp encoder là input.
+
+-> Summary: Mô hình Transformers được chia ra làm hai phần chính Encoder và Decoder. Chúng đều sử dụng các sublayers là một lớp Feed-Forward và Lớp multi-head self-attention mechanism và đặc biệt decoder thì họ sử dụng thêm một kỹ thuật là Mask Multi-head Self-attention.
+
+Position Encoding
+-> Một kỹ thuật để có thể đưa thêm thông tin về vị trí của các từ vào mô hình Transformer.
+
+Đặt vấn đề:
+
+Dựa trên tổng quan mô hình phía trên, thì chúng ta có thể thấy rằng mô hình Transformer xử lý tất cả các input vào cùng cùng một lượt (có thể coi là xử lý song song) -> Mất đi khả năng nắm bắt về vị trí nếu chỉ sử dụng Word Embedding. -> Nếu chỉ sử dụng kiểu thêm thông tin bằng cách đánh số thứ tự 0, 1, 2, 3, … n để đánh dấu vị trí của nó thì sẽ có một vấn đề là các số sẽ trở lên quá lớn . Hay nếu normalize chúng về khoảng 0 -> 1 thì nó sẽ không nắm bắt được việc hai từ đó cách nhau bao xa. -> Đề xuất kỹ thuật Position Encoding
+
+Công thức:
+
+-> Ý tưởng đầu ra khá giống với việc biểu diễn số nguyên dưới dạng nhị phân -> Giải quyết vấn đề biểu diễn vị trí của các từ.
+
+Sâu hơn về công thức:
+Đầu tiên họ tính “góc” dựa trên công thức:
+
+Sau đó họ lấy sin hoặc là cos của góc được tính ở phía trên. Điều đó cho giá trị của từ ở vị trí 'pos' và chỉ số nhúng 'i'. 'pos' giữ nguyên giá trị không đổi đối với từ khi chỉ số nhúng 'i' tăng lên, tạo ra một mẫu duy nhất cho từ đó. Khi chuyển sang từ tiếp theo, 'pos' tăng lên. Điều này làm dịch chuyển mẫu sang phải một chút. Công thức 'PE' áp dụng hàm sin cho các chỉ số nhúng chẵn ('i') và hàm cosin cho các chỉ số nhúng lẻ.
+
+Lý do tác giả chọn công thức trên:
+
+Giải thích kỹ hơn ý trên ở dưới dạng toán học:
+
+Một lý do khác mà tác giả chọn công thức này: 
+
+One of the reasons for using sine and cosine functions is that they are periodic and so whether the model is learning on a sequence of length 5, or of length 500, the encodings will always have the same range ([-1, 1]).
+
+Multihead Self-Attention
+Self-Attention
+Mathematics of Self-Attention:
+
+Một số khái niệm: Query: Đại diện cho thông tin hiện tại mà chúng ta đang xử lý Key: Đại diện cho thông tin về các thành phần khác trong chuỗi đầu vào Value: Đại diện cho những thông tin bổ sung ý nghĩa nội dung, ý nghĩa cho Query
+
+-> Có thể hiểu như một cơ chế tìm kiếm. Cơ chế này sẽ cho phép mô hình tìm kiếm trong các từ còn lại, từ nào “giống” để sai đó thông tin sẽ được mã hóa dựa trên các từ trên.
+
+Mô tả các bước làm: Bước 1: Tính ma trận query, key, value bằng cách khởi tạo 3 ma trận trọng số query, key, vector. Sau đó nhân input với các ma trận trọng số này để tạo thành 3 ma trận tương ứng. Bước 2: Tính attention weights. Nhân 2 ma trận key, query vừa được tính ở trên với nhau để với ý nghĩa là so sánh giữa câu query và key để học mối tương quan. Sau đó thì chuẩn hóa về đoạn [0-1] bằng hàm softmax. 1 có nghĩa là câu query giống với key, 0 có nghĩa là không giống. Bước 3: Tính output. Nhân attention weights với ma trận value. Điều này có nghĩa là chúng ta biểu diễn một từ bằng trung bình có trọng số (attention weights) của ma trận value.
+
+Đi sâu hơn về phần công thức của Self-Attention:
+
+QK.T: Giúp thể hiện mối tương quan của các từ đang xét với các từ khác trong câu căn dk: Scaling factor -> Softmax: Chuẩn hóa trong số attention về khoảng [0,1] V: Lọc các giá trị attention quan trọng
+
+Tại sao tác giả sử dụng Self Attention (Được đề cập một mục trong paper) Ném tất cả vào trong một lần mà không xét kiểu dạng chuỗi như RNN hay LSTM -> đưa thuật toán về O(1) Tính toán cho các vị trí độc lập với nhau có thể song song hóa hoàn toàn Dễ học sự phụ thuộc về tầm xa và vị trí
+
+Multihead Self-Attention
+-> Hiểu đơn giản là việc chúng ta cho thêm nhiều phần self-attention hơn -> Cần thêm nhiều ma trận Q, K và V hơn Multi head attention cho phép mô hình chú ý đến đồng thời những pattern dễ quan sát được như sau. Chú ý đến từ kế trước của một từ Chú ý đến từ kế sau của một từ Chú ý đến những từ liên quan của một từ
+
+Mask Multihead Self-Attention
+-> Hiểu đơn giản là sự kết hợp giữa self-attention và causal masking -> Tập trung vào những token hiện tại và quá khứ -> Key Idea: Sử dụng một ma trận vuông với những thành phần nằm trên đường chéo chính có giá trị âm vô cùng còn các thành phần khác có giá trị là 0 -> Giúp cho đầu vào trong lớp decoder của chúng ta chỉ tập trung tìm hiếm mối qua hệ của token hiện nó đang xét với các từ trong quá khứ và chính nó, không xét tới các token tương lai.
+
+Position-wise Feed-Forward Networks
+Một số thông tin về Lớp Feed-Forward này: Activate function: ReLU d_input = d_ouput = 512 d_ff = 2048
+
+Training
+(Hiện tại lấy thông tin từ trong paper)
+
+Tác giả sử dụng Adam để làm phương pháp Optimizer. Nhưng learning rate cần được điều chỉnh trong suốt quá trình học dựa trên công thức
+
+Ngoài ra còn sử dụng thêm một số kỹ thuật khác về Regularization để tối ưu: Residual Dropout, Label Smoothing.
+
+Residual Dropout
+-> Giúp giảm overfitting -> Loại bỏ một số kết nối giữa các lớp trong transformer -> Khá là giống với việc Dropout trong neural network bình thường nhưng nó sẽ làm việc và sử dụng trong các lớp attention heads.
+
+Label Smoothing
+-> Dễ xảy ra overfit với rất nhiều tham số của mô hình Transformer -> Hiểu đơn giản là nó sẽ phát mô hình khi nó quá tự tin vào việc dự đoán của mình -> Thay vì mã hóa nhãn là một trường hợp one-hot vector thì chúng ta thay đổi bằng cash phân bổ thêm các xác suất vào các trường hợp còn lại.
+
+Lossfunction
+-> Sử dụng thiên hướng giống cross-entropy loss -> So sánh xác suất đầu ra với target

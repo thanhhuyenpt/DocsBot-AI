@@ -1,0 +1,16 @@
+The difference between supervised and unsupervised learning
+The biggest difference between supervised and unsupervised machine learning is the type of data used. Supervised learning uses labeled training data, and unsupervised learning does not. 
+
+More simply, supervised learning models have a baseline understanding of what the correct output values should be. 
+
+With supervised learning, an algorithm uses a sample dataset to train itself to make predictions, iteratively adjusting itself to minimize error. These datasets are labeled for context, providing the desired output values to enable a model to give a “correct” answer. 
+
+In contrast, unsupervised learning algorithms work independently to learn the data's inherent structure without any specific guidance or instruction. You simply provide unlabeled input data and let the algorithm identify any naturally occurring patterns in the dataset. 
+
+While the type of data is the easiest way to differentiate between these two approaches, they each have different goals and applications that also set them apart from each other. 
+
+Supervised learning models are more focused on learning the relationships between input and output data. For example, a supervised model might be used to predict flight times based on specific parameters, such as weather conditions, airport traffic, peak flight hours, and more. 
+
+On the other hand, unsupervised learning is more helpful for discovering new patterns and relationships in raw, unlabeled data. Unsupervised learning models, for instance, might be used to identify buyer groups that purchase related products together to provide suggestions for other items to recommend to similar customers. 
+
+As a result, supervised and unsupervised machine learning are deployed to solve different types of problems. Supervised machine learning is suited for classification and regression tasks, such as weather forecasting, pricing changes, sentiment analysis, and spam detection. While unsupervised learning is more commonly used for exploratory data analysis and clustering tasks, such as anomaly detection, big data visualization, or customer segmentation. 

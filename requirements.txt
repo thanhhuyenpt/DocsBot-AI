@@ -12,3 +12,4 @@ pandoc==2.3
 pypandoc==1.11
 llama-cpp-python==0.1.50
 gradio==3.50.2
+pydantic==1.10.14

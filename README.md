@@ -46,6 +46,7 @@ In order to ask a question, run a command like:
 python myGPT.py
 ```
 Enter your Query in TextBox and Hit enter. Wait while the LLM model consumes the prompt and prepares the answer, show your query and answer below TextBox. as show in below figure.
+
 ![](images/app.png)
 
 

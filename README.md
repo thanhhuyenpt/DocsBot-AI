@@ -1,4 +1,4 @@
-# DocsBot-AI
+# DocsBot-GPT
 Create your own Chatbot (ChatGPT) with your documents using Langchain and Gradio. 
 This also uses:
 - HuggingFaceEmbeddings for embeddings

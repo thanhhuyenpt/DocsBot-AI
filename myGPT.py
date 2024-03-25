@@ -28,11 +28,6 @@ os.environ["LANGCHAIN_API_KEY"] = "ls__80c61538efab4b67a9cdf63022e62cfa"
 embeddings_model_name = os.environ.get("EMBEDDINGS_MODEL_NAME")
 persist_directory = os.environ.get('PERSIST_DIRECTORY')
 
-model_type = os.environ.get('MODEL_TYPE')
-model_path = os.environ.get('MODEL_PATH')
-model_n_ctx = os.environ.get('MODEL_N_CTX')
-source_directory = os.environ.get('SOURCE_DIRECTORY', 'source_documents')
-
 # Create embeddings
 embeddings = HuggingFaceEmbeddings(model_name=embeddings_model_name)
 

@@ -5,7 +5,7 @@ This also uses:
 - ChromaDB for a vectorstore
 - OpenAI for a text generation model
 
-I'm seving chatbot on Google Colab, you can try running it hear 
+I'm serving chatbot on Google Colab, you can try running it hear 
 
 # High level architecture of Chatbot
 ![High level architecture of Chatbot](images/architecture.png)

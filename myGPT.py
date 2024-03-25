@@ -19,10 +19,11 @@ from constants import CHROMA_SETTINGS
 """
 import LANGCHAIN_API_KEY in case you encounter the error: 
 langsmith.utils.LangSmithUserError: API key must be provided when using hosted LangSmith API
+Create here: https://smith.langchain.com/
 """
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
-os.environ["LANGCHAIN_API_KEY"] = "ls__80c61538efab4b67a9cdf63022e62cfa"
+os.environ["LANGCHAIN_API_KEY"] = "YOUR_LANGCHAIN_API_KEY"
 
 
 embeddings_model_name = os.environ.get("EMBEDDINGS_MODEL_NAME")
@@ -40,7 +41,7 @@ db = Chroma(embedding_function=embeddings,
 retriever = db.as_retriever()
 
 # Define llm
-llm = ChatOpenAI(temperature=0, openai_api_key='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')
+llm = ChatOpenAI(temperature=0, openai_api_key='YOUR_OPENAI_API_KEY')
 
 """
 Set up our chain that can answer questions based on documents:

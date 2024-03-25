@@ -39,6 +39,8 @@ python ingest.py
 ```
 It will create an index containing the local vectorstore. Will take time, depending on the size of your documents. You can ingest as many documents as you want, and all will be accumulated in the local embeddings database. If you want to start from an empty database, delete the ```index```.
 ## Ask questions to your documents using Gradio UI
+Before running the **myGPT.py** file, please replace 'YOUR_OPENAI_API_KEY' in the **myGPT.py** file with your OpenAI API Key
+
 In order to ask a question, run a command like:
 ```
 python myGPT.py
